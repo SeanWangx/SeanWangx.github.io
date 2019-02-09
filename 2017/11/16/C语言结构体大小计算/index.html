@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="C,">
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico?v=5.1.2">
+
+
+
+
+
+
+<meta name="description" content="前言在使用C语言进行数据结构的实现时，结构体会被普遍使用到，但是对于结构体大小的计算一直有点疑问，这里进行学习与解释一下。">
+<meta name="keywords" content="C">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C语言结构体大小计算">
+<meta property="og:url" content="https://seanwangx.github.io/2017/11/16/C语言结构体大小计算/index.html">
+<meta property="og:site_name" content="Sean Wangx">
+<meta property="og:description" content="前言在使用C语言进行数据结构的实现时，结构体会被普遍使用到，但是对于结构体大小的计算一直有点疑问，这里进行学习与解释一下。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-02-09T07:11:17.339Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="C语言结构体大小计算">
+<meta name="twitter:description" content="前言在使用C语言进行数据结构的实现时，结构体会被普遍使用到，但是对于结构体大小的计算一直有点疑问，这里进行学习与解释一下。">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://seanwangx.github.io/2017/11/16/C语言结构体大小计算/">
+
+
+
+
+
+  <title>C语言结构体大小计算 | Sean Wangx</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Sean Wangx</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://seanwangx.github.io/2017/11/16/C语言结构体大小计算/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="王曉波">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sean Wangx">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">C语言结构体大小计算</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-16T14:23:00+08:00">
+                2017-11-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/struggle/" itemprop="url" rel="index">
+                    <span itemprop="name">struggle</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>在使用C语言进行数据结构的实现时，结构体会被普遍使用到，但是对于结构体大小的计算一直有点疑问，这里进行学习与解释一下。</p>
+<a id="more"></a>
+<h2 id="字节大小"><a href="#字节大小" class="headerlink" title="字节大小"></a>字节大小</h2><p>由于结构体中可以定义不同类型变量，所以计算结构体的大小与其中定义到的变量类型有关，因此有必要了解一下C语言各类型大小，单位为字节。</p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Size x64</th>
+<th>Size x32</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>char</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td>short</td>
+<td>2</td>
+<td>2</td>
+</tr>
+<tr>
+<td>int</td>
+<td>4</td>
+<td>4</td>
+</tr>
+<tr>
+<td>short int</td>
+<td>2</td>
+<td>2</td>
+</tr>
+<tr>
+<td>unsigned int</td>
+<td>4</td>
+<td>4</td>
+</tr>
+<tr>
+<td>long</td>
+<td>8</td>
+<td>4</td>
+</tr>
+<tr>
+<td>unsigned long</td>
+<td>8</td>
+<td>4</td>
+</tr>
+<tr>
+<td>float</td>
+<td>4</td>
+<td>4</td>
+</tr>
+<tr>
+<td>double</td>
+<td>8</td>
+<td>8</td>
+</tr>
+<tr>
+<td>int *</td>
+<td>8</td>
+<td>4</td>
+</tr>
+</tbody>
+</table>
+<p>这里要注意的是所有的<strong><em>指针</em></strong>变量其大小都统一，和定义的具体类型无关。</p>
+<h2 id="偏移量"><a href="#偏移量" class="headerlink" title="偏移量"></a>偏移量</h2><h3 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h3><blockquote>
+<p>结构体中的偏移量是一个成员的实际地址和结构体首地址之间的距离。</p>
+</blockquote>
+<h3 id="规则"><a href="#规则" class="headerlink" title="规则"></a>规则</h3><ol>
+<li>每个成员的偏移量必须是当前成员所占内存大小的整数倍，如果不是编译器会在成员之间加上填充字节。</li>
+<li>当所有成员大小计算完毕，编译器会判断当前结构体大小是否是结构体中最宽成员变量大小的整数倍，如果不是则会在最后一个成员后面填充字节。</li>
+</ol>
+<h2 id="计算"><a href="#计算" class="headerlink" title="计算"></a>计算</h2><p>在这里通过实例解释一下，需要注意的是以64位编译器作为平台。</p>
+<h3 id="成员间填充字节"><a href="#成员间填充字节" class="headerlink" title="成员间填充字节"></a>成员间填充字节</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">node</span> &#123;</span></span><br><span class="line">  <span class="keyword">int</span> data;</span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">node</span> *<span class="title">pNext</span>;</span></span><br><span class="line">&#125; Node;</span><br></pre></td></tr></table></figure>
+<p>解释如下：</p>
+<ol>
+<li>int data: 偏移量为0，大小为4</li>
+<li>struct node *pNext: 偏移量为4，指针变量大小为8，偏移量应为变量大小的整数倍，所以在成员之间填充4字节，变为偏移量8，大小8</li>
+<li>当前结构体大小为4 + 4 + 8 = 16，是结构体内最宽成员指针变量大小8的整数倍</li>
+</ol>
+<p>结果为16字节，计算为4 + 4（填充） + 8 = 16。</p>
+<h3 id="末尾填充字节"><a href="#末尾填充字节" class="headerlink" title="末尾填充字节"></a>末尾填充字节</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">node</span> &#123;</span></span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">node</span> *<span class="title">pNext</span>;</span></span><br><span class="line">  <span class="keyword">int</span> data;</span><br><span class="line">&#125; Node;</span><br></pre></td></tr></table></figure>
+<p>解释如下：</p>
+<ol>
+<li>struct node *pNext: 偏移量为0，指针变量大小为8</li>
+<li>int data: 偏移量为8，大小为4</li>
+<li>当前结构体大小为8 + 4 = 12，不是8的整数倍，在int data之后填充4字节，</li>
+</ol>
+<p>结果为16字节8 + 4 + 4（填充） = 16。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/C/" rel="tag"># C</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/11/13/Textarea的maxlength实现/" rel="next" title="Textarea的maxlength实现">
+                <i class="fa fa-chevron-left"></i> Textarea的maxlength实现
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/02/01/Vue组件通信方式/" rel="prev" title="Vue组件通信方式">
+                Vue组件通信方式 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="/images/avatar.jpg" alt="王曉波">
+          <p class="site-author-name" itemprop="name">王曉波</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p><h3>&lt;h1&gt; Code is poetry. &lt;/h1&gt;</h3><p></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">20</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">20</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://www.github.com/SeanWangx" target="_blank" title="Github">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                    
+                      Github
+                    
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-block">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              Links
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://blog.yuantang.site/" title="TangGe's blog" target="_blank">TangGe's blog</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#字节大小"><span class="nav-number">2.</span> <span class="nav-text">字节大小</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#偏移量"><span class="nav-number">3.</span> <span class="nav-text">偏移量</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#定义"><span class="nav-number">3.1.</span> <span class="nav-text">定义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#规则"><span class="nav-number">3.2.</span> <span class="nav-text">规则</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#计算"><span class="nav-number">4.</span> <span class="nav-text">计算</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#成员间填充字节"><span class="nav-number">4.1.</span> <span class="nav-text">成员间填充字节</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#末尾填充字节"><span class="nav-number">4.2.</span> <span class="nav-text">末尾填充字节</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">王曉波</span>
+
+  
+</div>
+
+
+  <div class="powered-by">
+    由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+  </div>
+
+  <span class="post-meta-divider">|</span>
+
+  <div class="theme-info">
+    主题 &mdash;
+    <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+      NexT.Muse
+    </a>
+  </div>
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

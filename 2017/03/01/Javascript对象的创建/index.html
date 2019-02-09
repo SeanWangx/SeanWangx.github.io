@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="JavaScript,Object-Oriented,">
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico?v=5.1.2">
+
+
+
+
+
+
+<meta name="description" content="在JavaScript中，最简单的创建对象的语法恐怕就是new Object()了，但是往往会遇到重复创建类似对象的情况，这种时候去手动一次次重复显然不合理，下面介绍几种常用的创建对象的模式。 工厂模式工厂模式是一种广为人知的设计模式，这种模式抽象了创建具体对象的过程，而由于在JavaScript中没有类的概念，所以这里使用函数来代替，即使用函数来封装创建特定对象的细节。 12345678910f">
+<meta name="keywords" content="JavaScript,Object-Oriented">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JavaScript对象的创建">
+<meta property="og:url" content="https://seanwangx.github.io/2017/03/01/Javascript对象的创建/index.html">
+<meta property="og:site_name" content="Sean Wangx">
+<meta property="og:description" content="在JavaScript中，最简单的创建对象的语法恐怕就是new Object()了，但是往往会遇到重复创建类似对象的情况，这种时候去手动一次次重复显然不合理，下面介绍几种常用的创建对象的模式。 工厂模式工厂模式是一种广为人知的设计模式，这种模式抽象了创建具体对象的过程，而由于在JavaScript中没有类的概念，所以这里使用函数来代替，即使用函数来封装创建特定对象的细节。 12345678910f">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-02-09T07:11:17.299Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="JavaScript对象的创建">
+<meta name="twitter:description" content="在JavaScript中，最简单的创建对象的语法恐怕就是new Object()了，但是往往会遇到重复创建类似对象的情况，这种时候去手动一次次重复显然不合理，下面介绍几种常用的创建对象的模式。 工厂模式工厂模式是一种广为人知的设计模式，这种模式抽象了创建具体对象的过程，而由于在JavaScript中没有类的概念，所以这里使用函数来代替，即使用函数来封装创建特定对象的细节。 12345678910f">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://seanwangx.github.io/2017/03/01/Javascript对象的创建/">
+
+
+
+
+
+  <title>JavaScript对象的创建 | Sean Wangx</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Sean Wangx</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://seanwangx.github.io/2017/03/01/Javascript对象的创建/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="王曉波">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sean Wangx">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">JavaScript对象的创建</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-03-01T22:01:21+08:00">
+                2017-03-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/frontend/" itemprop="url" rel="index">
+                    <span itemprop="name">frontend</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>在JavaScript中，最简单的创建对象的语法恐怕就是<strong>new Object()</strong>了，但是往往会遇到重复创建类似对象的情况，这种时候去手动一次次重复显然不合理，下面介绍几种常用的创建对象的模式。</p>
+<h2 id="工厂模式"><a href="#工厂模式" class="headerlink" title="工厂模式"></a>工厂模式</h2><p>工厂模式是一种广为人知的设计模式，这种模式抽象了创建具体对象的过程，而由于在JavaScript中没有类的概念，所以这里使用函数来代替，即使用函数来封装创建特定对象的细节。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">createPerson</span>(<span class="params">name, age, job</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> o = <span class="keyword">new</span> <span class="built_in">Object</span>();</span><br><span class="line">  o.name = name;</span><br><span class="line">  o.age = age;</span><br><span class="line">  o.job = job;</span><br><span class="line">  o.sayHi = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    alert(<span class="string">"Hello,I'm "</span>+<span class="keyword">this</span>.name+<span class="string">"!"</span>);</span><br><span class="line">  &#125;;</span><br><span class="line">  <span class="keyword">return</span> o;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<a id="more"></a>
+<p>需要调用的时候就像这样</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> person1 = createPerson(<span class="string">"Sean"</span>, <span class="number">22</span>, <span class="string">"Web Developer"</span>);</span><br><span class="line"><span class="keyword">var</span> person2 = createPerson(<span class="string">"Wang"</span>, <span class="number">23</span>, <span class="string">"Engineer"</span>);</span><br></pre></td></tr></table></figure>
+<p>分析创建过程可以知道每次<strong>createPerson()</strong>函数按顺序接受指定的参数，同时创建一个新的对象作为初始对象，并将接受的参数作为这个对象的属性，最后返回这个对象。毫无疑问每次的创建都是一个新的对象，我们并不能知道这个对象属于什么类型。</p>
+<h2 id="构造函数模式"><a href="#构造函数模式" class="headerlink" title="构造函数模式"></a>构造函数模式</h2><p>虽然JavaScript中没有类，但幸好有构造函数的存在，所以我们可以利用构造函数来进行对象的创建。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Person</span>(<span class="params">name, age, job</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">this</span>.name = name;</span><br><span class="line">  <span class="keyword">this</span>.age = age;</span><br><span class="line">  <span class="keyword">this</span>.job = job;</span><br><span class="line">  <span class="keyword">this</span>.sayHi = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    alert(<span class="string">"Hello,I'm "</span>+<span class="keyword">this</span>.name+<span class="string">"!"</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>而需要创建对象的时候则是想这样了</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> person1 = <span class="keyword">new</span> Person(<span class="string">"Sean"</span>, <span class="number">22</span>, <span class="string">"Web Developer"</span>);</span><br><span class="line"><span class="keyword">var</span> person2 = <span class="keyword">new</span> Person(<span class="string">"Wang"</span>, <span class="number">23</span>, <span class="string">"Engineer"</span>);</span><br></pre></td></tr></table></figure>
+<p>可以看到，构造函数模式和工厂模式有几个比较大的区别</p>
+<ul>
+<li>没有显示地创建对象</li>
+<li>直接将属性和方法赋给了this对象</li>
+<li>没有return语句</li>
+</ul>
+<p>值得一提的是一般构造函数始终都应该以一个<strong>大写字母</strong>开头，而非构造函数则是以一个小写字母开头，这种做法借鉴自其他的OO(Object-Oriented)语言，这样做主要为了区分其他的函数，因为本身构造函数也是函数，只不过可以用来创建对象而已。</p>
+<p>这样得到的对象之间存在着联系，person1和person2都保存着Person的一个不同实例，它们都有一个constructor属性，该属性都指向Person。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">console</span>.log(person1.constructor == Person); <span class="comment">// true</span></span><br><span class="line"><span class="built_in">console</span>.log(person2.constructor == Person); <span class="comment">// true</span></span><br><span class="line"><span class="built_in">console</span>.log(person1.constructor == person2.constructor); <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
+<p>尽管构造函数模式解决了我们确认一个实例类型的问题，但是仔细看一下<strong>sayHi()</strong>这个函数我们知道不同实例上的同名函数是不相等的，如果有兴趣可以通过以下代码验证以下。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">console</span>.log(person1.sayHi === person2.sayHi); <span class="comment">// false</span></span><br></pre></td></tr></table></figure>
+<p>而实际上为每个实例创建相同功能的函数实例完全没有必要，有人会想到把这个函数定义在构造函数外部来解决这个问题，但这样就破坏了封装性。</p>
+<h2 id="原型模式"><a href="#原型模式" class="headerlink" title="原型模式"></a>原型模式</h2><p>针对上面提到的问题，原型模式能很好的解决。我们创建的每个函数都有一个<strong>prototype</strong>(原型)属性，这个属性是一个指向一个对象的指针，而这个对象的用途是包含由特定类型的所有实例共享的属性和方法，我们就称之为某个函数的原型。而prototype就是通过调用构造函数而创建的实例的原型对象。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Person</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Person.prototype.name = <span class="string">"Sean"</span>;</span><br><span class="line">Person.prototype.age = <span class="number">22</span>;</span><br><span class="line">Person.prototype.job = <span class="string">"Web Developer"</span>;</span><br><span class="line">Person.prototype.sayHi = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  alert( <span class="string">"Hello,I'm "</span> + <span class="keyword">this</span>.name + <span class="string">"!"</span> );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>原型模式中，所有通过构造函数<strong>Person()</strong>创建的实例共享了name、age、job和sayHi属性。</p>
+<h2 id="构造和原型模式的结合"><a href="#构造和原型模式的结合" class="headerlink" title="构造和原型模式的结合"></a>构造和原型模式的结合</h2><p>通过组合构造函数模式和原型模式我们能够讲实例属性和共享属性、共享方法的分离定义。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Person</span>(<span class="params">name, age, job</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">this</span>.name = name;</span><br><span class="line">  <span class="keyword">this</span>.age = age;</span><br><span class="line">  <span class="keyword">this</span>.job = job;</span><br><span class="line">  <span class="keyword">this</span>.friends = [ <span class="string">"Shelby"</span>, <span class="string">"Court"</span> ];</span><br><span class="line">&#125;</span><br><span class="line">Person.prototype.sayHi = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  alert( <span class="string">"Hello,I'm "</span> + <span class="keyword">this</span>.name + <span class="string">"!"</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> person1 = <span class="keyword">new</span> Person(<span class="string">"Sean"</span>, <span class="number">22</span>, <span class="string">"Web Developer"</span>);</span><br><span class="line"><span class="keyword">var</span> person2 = <span class="keyword">new</span> Person(<span class="string">"Wang"</span>, <span class="number">23</span>, <span class="string">"Engineer"</span>);</span><br></pre></td></tr></table></figure>
+<p>这样创建的实例有自己的实例属性name、age、job和friends，也存在有共享方法sayHi。同时，虽然friends是一个引用类型的属性，但由于是在构造函数中定义的，所以不同实例间的friends即便是引用类型也互不影响，单独存在。</p>
+<h2 id="动态原型模式"><a href="#动态原型模式" class="headerlink" title="动态原型模式"></a>动态原型模式</h2><p>独立的构造函数和原型可能会让人困惑，所以有了动态原型模式的产生。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Person</span>(<span class="params">name, age, job</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">this</span>.name = name;</span><br><span class="line">  <span class="keyword">this</span>.age = age;</span><br><span class="line">  <span class="keyword">this</span>.job = job;</span><br><span class="line">  <span class="keyword">this</span>.friends = [<span class="string">"Shelby"</span>,<span class="string">"Court"</span>];</span><br><span class="line">  <span class="keyword">if</span>(<span class="keyword">typeof</span> sayHi != <span class="string">"function"</span>) &#123;</span><br><span class="line">    Person.prototype.sayHi = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">      alert(<span class="string">"Hello,I'm "</span>+<span class="keyword">this</span>.name+<span class="string">"!"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里将原型共享方法的定义逻辑放在了构造函数中，并且只有sayHi()方法不存在的情况下会被添加到原型中，同时所有实例立即共享该方法。</p>
+<h2 id="稳妥构造函数模式"><a href="#稳妥构造函数模式" class="headerlink" title="稳妥构造函数模式"></a>稳妥构造函数模式</h2><p>道格拉斯.克罗克福德(Douglas Crockford)发明了JavaScript中的稳妥对象这个概念，该对象没有公共属性，方法不引用this的对象，适合禁止使用this和new的安全的环境，或者防止数据被改动的情况中使用。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Person</span>(<span class="params">name, age, job</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> o = <span class="keyword">new</span> <span class="built_in">Object</span>();</span><br><span class="line">  <span class="comment">// 在这里可以定义私有变量</span></span><br><span class="line">  o.sayHi = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(name);</span><br><span class="line">  &#125;;</span><br><span class="line">  <span class="keyword">return</span> o;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> sean = Person(<span class="string">"Sean"</span>, <span class="number">22</span>, <span class="string">"Web Developer"</span>);</span><br><span class="line">sean.sayHi(); <span class="comment">// Hello I'm Sean</span></span><br></pre></td></tr></table></figure>
+<p>变量sean保存这一个稳妥对象，除了sayHi()方法没有别的方法可以访问其数据成员。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>能记多少记多少，理解万岁！</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/JavaScript/" rel="tag"># JavaScript</a>
+          
+            <a href="/tags/Object-Oriented/" rel="tag"># Object-Oriented</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/03/02/Github-push问题常见解决方法/" rel="prev" title="Github push问题常见解决方法">
+                Github push问题常见解决方法 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="/images/avatar.jpg" alt="王曉波">
+          <p class="site-author-name" itemprop="name">王曉波</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p><h3>&lt;h1&gt; Code is poetry. &lt;/h1&gt;</h3><p></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">20</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">20</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://www.github.com/SeanWangx" target="_blank" title="Github">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                    
+                      Github
+                    
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-block">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              Links
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://blog.yuantang.site/" title="TangGe's blog" target="_blank">TangGe's blog</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#工厂模式"><span class="nav-number">1.</span> <span class="nav-text">工厂模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#构造函数模式"><span class="nav-number">2.</span> <span class="nav-text">构造函数模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#原型模式"><span class="nav-number">3.</span> <span class="nav-text">原型模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#构造和原型模式的结合"><span class="nav-number">4.</span> <span class="nav-text">构造和原型模式的结合</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#动态原型模式"><span class="nav-number">5.</span> <span class="nav-text">动态原型模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#稳妥构造函数模式"><span class="nav-number">6.</span> <span class="nav-text">稳妥构造函数模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">7.</span> <span class="nav-text">总结</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">王曉波</span>
+
+  
+</div>
+
+
+  <div class="powered-by">
+    由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+  </div>
+
+  <span class="post-meta-divider">|</span>
+
+  <div class="theme-info">
+    主题 &mdash;
+    <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+      NexT.Muse
+    </a>
+  </div>
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="JavaScript,Log,">
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico?v=5.1.2">
+
+
+
+
+
+
+<meta name="description" content="前言前端调试有很多方法，并且各人有各人的习惯，比如通过浏览器的devTool打断点进行debug调试，或者清新脱俗的alert，不过我最常使用的还是console.log进行日志输出进行代码的调试。但是随着前端工程化发展，日志管理也变得非常有必要，所以，我希望能对于开发环境喝生产环境的日志进行区分，或者说分级控制。看了下目前的一些JS日志工具，可以说比较丰富了，然而还是想要自己尝试写一下这个日志控">
+<meta name="keywords" content="JavaScript,Log">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JavaScript日志控制">
+<meta property="og:url" content="https://seanwangx.github.io/2017/09/15/JavaScript日志控制/index.html">
+<meta property="og:site_name" content="Sean Wangx">
+<meta property="og:description" content="前言前端调试有很多方法，并且各人有各人的习惯，比如通过浏览器的devTool打断点进行debug调试，或者清新脱俗的alert，不过我最常使用的还是console.log进行日志输出进行代码的调试。但是随着前端工程化发展，日志管理也变得非常有必要，所以，我希望能对于开发环境喝生产环境的日志进行区分，或者说分级控制。看了下目前的一些JS日志工具，可以说比较丰富了，然而还是想要自己尝试写一下这个日志控">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-02-09T07:11:17.329Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="JavaScript日志控制">
+<meta name="twitter:description" content="前言前端调试有很多方法，并且各人有各人的习惯，比如通过浏览器的devTool打断点进行debug调试，或者清新脱俗的alert，不过我最常使用的还是console.log进行日志输出进行代码的调试。但是随着前端工程化发展，日志管理也变得非常有必要，所以，我希望能对于开发环境喝生产环境的日志进行区分，或者说分级控制。看了下目前的一些JS日志工具，可以说比较丰富了，然而还是想要自己尝试写一下这个日志控">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://seanwangx.github.io/2017/09/15/JavaScript日志控制/">
+
+
+
+
+
+  <title>JavaScript日志控制 | Sean Wangx</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Sean Wangx</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://seanwangx.github.io/2017/09/15/JavaScript日志控制/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="王曉波">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sean Wangx">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">JavaScript日志控制</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-15T22:32:01+08:00">
+                2017-09-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/frontend/" itemprop="url" rel="index">
+                    <span itemprop="name">frontend</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>前端调试有很多方法，并且各人有各人的习惯，比如通过浏览器的devTool打断点进行debug调试，或者清新脱俗的alert，不过我最常使用的还是console.log进行日志输出进行代码的调试。但是随着前端工程化发展，日志管理也变得非常有必要，所以，我希望能对于开发环境喝生产环境的日志进行区分，或者说分级控制。看了下目前的一些JS日志工具，可以说比较丰富了，然而还是想要自己尝试写一下这个日志控制。</p>
+<a id="more"></a>
+<h1 id="功能分析"><a href="#功能分析" class="headerlink" title="功能分析"></a>功能分析</h1><p>理想中，日志控制器应该有以下几个最基本的功能：</p>
+<ul>
+<li>准确性</li>
+<li>可分级</li>
+<li>可移植</li>
+</ul>
+<h2 id="准确性"><a href="#准确性" class="headerlink" title="准确性"></a>准确性</h2><p>作为日志的输出，信息正确永远是需要保证的，所以这里只是对原生的console进行了一下封装，并没有改变API，并且根据级别不同调用不同的方法如<code>console.error()</code>、<code>console.warn()</code>、<code>console.log()</code>等。</p>
+<h2 id="可分级"><a href="#可分级" class="headerlink" title="可分级"></a>可分级</h2><p>现在的开发是区分环境的——开发环境（dev）以及生产环境（prod），所以为了配合不同环境的输出日志信息不同的目的，日志的输出应该是分级的，参照Java的log4j，这里将日志的级别分为六个级别，等级从高到低排序：</p>
+<ol>
+<li>OFF: 不输出任何日志信息</li>
+<li>ERROR: <strong>错误</strong>级别</li>
+<li>WARN: <strong>警告</strong>级别</li>
+<li>INFO: <strong>提示</strong>级别</li>
+<li>DEBUG: <strong>调试</strong>级别</li>
+<li>ALL: 所有日志均输出</li>
+</ol>
+<p>日志的输出级别如果设定为<code>WARN</code>，那么<code>WARN</code>以下级别（<code>INFO</code>和<code>DEBUG</code>）的日志就不会进行输出了。通过分级以及环境的区分，我们可以很好实现在不同环境下日志的输出管理。</p>
+<h2 id="可移植"><a href="#可移植" class="headerlink" title="可移植"></a>可移植</h2><p>作为一个工具，日志控制器需要能很好适应现今的不同框架，所以，封装为单独的模块是一个比较好的做法，这样就能在需要的地方引入，便于开发使用。</p>
+<h1 id="功能实现"><a href="#功能实现" class="headerlink" title="功能实现"></a>功能实现</h1><p>这里关于日志控制器<code>Log4JS</code>的实现采用的是es5传统创建对象的方式，没有采用es6中<code>class</code>的方式。</p>
+<h2 id="创建等级字典"><a href="#创建等级字典" class="headerlink" title="创建等级字典"></a>创建等级字典</h2><p>由于有分级的要求，所以创建一个等级字典很有必要。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 级别名字典</span></span><br><span class="line"><span class="keyword">const</span> TYPE = &#123;</span><br><span class="line">  OFF: <span class="string">'OFF'</span>,</span><br><span class="line">  ERROR: <span class="string">'ERROR'</span>,</span><br><span class="line">  WARN: <span class="string">'WARN'</span>,</span><br><span class="line">  INFO: <span class="string">'INFO'</span>,</span><br><span class="line">  DEBUG: <span class="string">'DEBUG'</span>,</span><br><span class="line">  ALL: <span class="string">'ALL'</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 级别顺序字典</span></span><br><span class="line"><span class="keyword">const</span> LEVEL = &#123;</span><br><span class="line">  [TYPE.OFF]: <span class="number">0</span>,</span><br><span class="line">  [TYPE.ERROR]: <span class="number">1</span>,</span><br><span class="line">  [TYPE.WARN]: <span class="number">2</span>,</span><br><span class="line">  [TYPE.INFO]: <span class="number">3</span>,</span><br><span class="line">  [TYPE.DEBUG]: <span class="number">4</span>,</span><br><span class="line">  [TYPE.ALL]: <span class="number">5</span>,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>顺便提一下，常量<code>LEVEL</code>中尝试性使用了一下es6对于对象的扩展——属性名的书写方式。</p>
+<h2 id="创建Log4JS对象"><a href="#创建Log4JS对象" class="headerlink" title="创建Log4JS对象"></a>创建Log4JS对象</h2><p>预想中，初始化时可以接受一个等级，作为输出日志级别的控制。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Log4JS</span> (<span class="params">lvNm = TYPE.WARN</span>) </span>&#123;</span><br><span class="line">  lvNm = TYPE[<span class="built_in">String</span>(lvNm).toUpperCase()] || TYPE.WARN</span><br><span class="line">  <span class="keyword">let</span> level = LEVEL[lvNm]</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">`Log4JS Level: <span class="subst">$&#123;lvNm&#125;</span>`</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>当创建<code>Log4JS</code>实例的时候，应该就会设定好日志的输出级别名，以及对应的判定级别。</p>
+<p>因为不想每次创建实例都创建重复的打印函数，所以将日志输出方法放在原型上。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">  * 错误级别日志</span></span><br><span class="line"><span class="comment">  */</span></span><br><span class="line">Log4JS.prototype.error = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (LEVEL[TYPE.ERROR] &gt; level) <span class="keyword">return</span></span><br><span class="line">  <span class="built_in">console</span>.error(<span class="string">`[<span class="subst">$&#123;TYPE.ERROR&#125;</span>]`</span>, ...arguments)</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">  * 警告级别日志</span></span><br><span class="line"><span class="comment">  */</span></span><br><span class="line">Log4JS.prototype.warn = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (LEVEL[TYPE.WARN] &gt; level) <span class="keyword">return</span></span><br><span class="line">  <span class="built_in">console</span>.warn(<span class="string">`[<span class="subst">$&#123;TYPE.WARN&#125;</span>]`</span>, ...arguments)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">  * 提示级别日志</span></span><br><span class="line"><span class="comment">  */</span></span><br><span class="line">Log4JS.prototype.info = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (LEVEL[TYPE.INFO] &gt; level) <span class="keyword">return</span></span><br><span class="line">  <span class="built_in">console</span>.info(<span class="string">`[<span class="subst">$&#123;TYPE.INFO&#125;</span>]`</span>, ...arguments)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">  * 调试级别日志</span></span><br><span class="line"><span class="comment">  */</span></span><br><span class="line">Log4JS.prototype.debug = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (LEVEL[TYPE.DEBUG] &gt; level) <span class="keyword">return</span></span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">`[<span class="subst">$&#123;TYPE.DEBUG&#125;</span>]`</span>, ...arguments)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="Log4JS的使用"><a href="#Log4JS的使用" class="headerlink" title="Log4JS的使用"></a>Log4JS的使用</h1><p>为了配合环境更好地使用极简日志控制器，所以一般入口会进行一些修改，做法是创建一个<code>Logger.js</code>：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> Log4JS <span class="keyword">from</span> <span class="string">'./Log4JS'</span></span><br><span class="line"><span class="keyword">import</span> config <span class="keyword">from</span> <span class="string">'../../config'</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> lv = (process.env.NODE_ENV === <span class="string">'production'</span> ? config.build.logLv : config.dev.logLv)</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="keyword">new</span> Log4JS(lv)</span><br></pre></td></tr></table></figure>
+<p>这是取自Vue项目中的实际使用，如果是其他框架或者结构，可自行修改适配。</p>
+<h1 id="结尾"><a href="#结尾" class="headerlink" title="结尾"></a>结尾</h1><p>认真分析自己写的这个日志控制器，可以看到功能实现非常的简单，而且有一个比较突出的问题，那就是由于是对原生<code>console</code>的封装，导致无法追踪具体文件位置，这是比较麻烦的地方，目前正在尝试研究<code>Error</code>对象，希望通过<code>Error</code>对象的内部信息完善这款日志控制器。</p>
+<p><a href="https://github.com/SeanWangx/Log4JS" target="_blank" rel="noopener">仓库地址</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/JavaScript/" rel="tag"># JavaScript</a>
+          
+            <a href="/tags/Log/" rel="tag"># Log</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/09/09/FingerMover踩坑/" rel="next" title="finger-mover踩坑记录">
+                <i class="fa fa-chevron-left"></i> finger-mover踩坑记录
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/09/16/JavaScript中的私有性/" rel="prev" title="JavaScript中的私有性">
+                JavaScript中的私有性 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="/images/avatar.jpg" alt="王曉波">
+          <p class="site-author-name" itemprop="name">王曉波</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p><h3>&lt;h1&gt; Code is poetry. &lt;/h1&gt;</h3><p></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">20</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">20</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://www.github.com/SeanWangx" target="_blank" title="Github">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                    
+                      Github
+                    
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-block">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              Links
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://blog.yuantang.site/" title="TangGe's blog" target="_blank">TangGe's blog</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#功能分析"><span class="nav-number">2.</span> <span class="nav-text">功能分析</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#准确性"><span class="nav-number">2.1.</span> <span class="nav-text">准确性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#可分级"><span class="nav-number">2.2.</span> <span class="nav-text">可分级</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#可移植"><span class="nav-number">2.3.</span> <span class="nav-text">可移植</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#功能实现"><span class="nav-number">3.</span> <span class="nav-text">功能实现</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#创建等级字典"><span class="nav-number">3.1.</span> <span class="nav-text">创建等级字典</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#创建Log4JS对象"><span class="nav-number">3.2.</span> <span class="nav-text">创建Log4JS对象</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Log4JS的使用"><span class="nav-number">4.</span> <span class="nav-text">Log4JS的使用</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#结尾"><span class="nav-number">5.</span> <span class="nav-text">结尾</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">王曉波</span>
+
+  
+</div>
+
+
+  <div class="powered-by">
+    由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+  </div>
+
+  <span class="post-meta-divider">|</span>
+
+  <div class="theme-info">
+    主题 &mdash;
+    <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+      NexT.Muse
+    </a>
+  </div>
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

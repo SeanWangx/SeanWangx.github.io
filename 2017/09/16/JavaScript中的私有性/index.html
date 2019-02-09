@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="Private,">
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico?v=5.1.2">
+
+
+
+
+
+
+<meta name="description" content="前言严格来说，JavaScript中是没有类的，但是我们可以通过对象原型实现类，到了es6中，class被引入，但它也主要是JavaScript现有的基于原型的继承的语法糖，这里暂且成为JavaScript中的类。在这个理解的基础上将JavaScript同其他OO语言如C++、Java等比较，我对于JavaScript中的私有性产生了些好奇，也在这里记录一些自己的思考。">
+<meta name="keywords" content="Private">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JavaScript中的私有性">
+<meta property="og:url" content="https://seanwangx.github.io/2017/09/16/JavaScript中的私有性/index.html">
+<meta property="og:site_name" content="Sean Wangx">
+<meta property="og:description" content="前言严格来说，JavaScript中是没有类的，但是我们可以通过对象原型实现类，到了es6中，class被引入，但它也主要是JavaScript现有的基于原型的继承的语法糖，这里暂且成为JavaScript中的类。在这个理解的基础上将JavaScript同其他OO语言如C++、Java等比较，我对于JavaScript中的私有性产生了些好奇，也在这里记录一些自己的思考。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-02-09T07:11:17.329Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="JavaScript中的私有性">
+<meta name="twitter:description" content="前言严格来说，JavaScript中是没有类的，但是我们可以通过对象原型实现类，到了es6中，class被引入，但它也主要是JavaScript现有的基于原型的继承的语法糖，这里暂且成为JavaScript中的类。在这个理解的基础上将JavaScript同其他OO语言如C++、Java等比较，我对于JavaScript中的私有性产生了些好奇，也在这里记录一些自己的思考。">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://seanwangx.github.io/2017/09/16/JavaScript中的私有性/">
+
+
+
+
+
+  <title>JavaScript中的私有性 | Sean Wangx</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Sean Wangx</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://seanwangx.github.io/2017/09/16/JavaScript中的私有性/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="王曉波">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sean Wangx">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">JavaScript中的私有性</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-16T22:32:01+08:00">
+                2017-09-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/frontend/" itemprop="url" rel="index">
+                    <span itemprop="name">frontend</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>严格来说，JavaScript中是没有<code>类</code>的，但是我们可以通过对象原型实现<code>类</code>，到了es6中，<code>class</code>被引入，但它也主要是JavaScript现有的基于原型的继承的语法糖，这里暂且成为JavaScript中的类。在这个理解的基础上将JavaScript同其他OO语言如C++、Java等比较，我对于JavaScript中的私有性产生了些好奇，也在这里记录一些自己的思考。</p>
+<a id="more"></a>
+<h1 id="私有属性"><a href="#私有属性" class="headerlink" title="私有属性"></a>私有属性</h1><p>所谓私有性无非就是作用域范围被加了一定的限制，在常规对象和es6中，私有属性有着不同的实现。</p>
+<h2 id="function中的私有属性"><a href="#function中的私有属性" class="headerlink" title="function中的私有属性"></a>function中的私有属性</h2><p>常规创建对象的方法用的是<code>function</code>，同时配合<code>this</code>来进行公共属性的定义，而要添加私有属性在function中非常方便，可以理解为定义在function内部的变量就是私有属性。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">SuperType</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">this</span>.props = <span class="string">'public variable'</span></span><br><span class="line">  selfProps = <span class="string">'private variable'</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> instance = <span class="keyword">new</span> SuperType()</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(instance.props) <span class="comment">// ‘public variable'</span></span><br><span class="line"><span class="built_in">console</span>.log(instance.selfProps) <span class="comment">// undefined</span></span><br></pre></td></tr></table></figure>
+<p>可以看到新创建的实例能访问到<code>props</code>，而不能访问<code>selfProps</code>，这就是私有属性。比较有意思的是有的时候会需要对象原型上的函数访问私有属性，目前找到的一种解决方式是定义语句在对象内部实现，比如这样。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">SuperType</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">this</span>.props = <span class="string">'public variable'</span></span><br><span class="line">  selfProps = <span class="string">'private variable'</span></span><br><span class="line">  SuperType.prototype.visit = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(selfProps)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> instance1 = <span class="keyword">new</span> SuperType()</span><br><span class="line"><span class="keyword">let</span> instance2 = <span class="keyword">new</span> SuperType()</span><br><span class="line"><span class="built_in">console</span>.log(instance1.visit === instance2.visit) <span class="comment">// true</span></span><br><span class="line">instance1.visit() <span class="comment">// 'private variable'</span></span><br></pre></td></tr></table></figure>
+<p>通过<code>===</code>可以判定visit是定义在原型上的公共函数，但是这里能访问到实例中的私有属性。</p>
+<h2 id="class中的私有属性"><a href="#class中的私有属性" class="headerlink" title="class中的私有属性"></a>class中的私有属性</h2><p>需要明确一点，es6不支持私有属性，但是目前有一个提案，为<code>class</code>加了私有属性，方法是在私有属性前加<code>#</code>：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Point</span> () </span>&#123;</span><br><span class="line">  #x = 0</span><br><span class="line">  printX () &#123;</span><br><span class="line">    console.log(#x)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如果想要稳妥地在class中实现私有属性的定义，还有一种比较取巧的方法就是利用模块。也就是说将模块作为一个作用域，对外的借口是class，但是在模块中、class外定义变量，因为模块的访问限制外部只能访问到class，这样定义在模块中的变量自然就专为class所有，这是私有属性的另一种实现。</p>
+<h1 id="私有方法"><a href="#私有方法" class="headerlink" title="私有方法"></a>私有方法</h1><p>和私有属性相似，私有方法在es5和es6中实现也是不同的。</p>
+<h2 id="function中的私有方法"><a href="#function中的私有方法" class="headerlink" title="function中的私有方法"></a>function中的私有方法</h2><p>es5中实现私有方法就像实现私有属性一样简单，就是定义在函数内部。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">SuperType</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="comment">// 公共方法</span></span><br><span class="line">  <span class="keyword">this</span>.sayHi = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'Hi'</span>)</span><br><span class="line">    sayHello()</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 私有方法</span></span><br><span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">sayHello</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'Hello'</span>)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> instance = <span class="keyword">new</span> SuperType()</span><br><span class="line">instance.sayHi()</span><br><span class="line"><span class="comment">// 'Hi'</span></span><br><span class="line"><span class="comment">// 'Hello'</span></span><br><span class="line"></span><br><span class="line">instance.sayHello()</span><br><span class="line"><span class="comment">// Uncaught TypeError: instance.sayHello is not a function</span></span><br></pre></td></tr></table></figure>
+<h2 id="class中的私有方法"><a href="#class中的私有方法" class="headerlink" title="class中的私有方法"></a>class中的私有方法</h2><p>和私有属性一样，es6中没有私有方法。但是就像私有属性一样，我们可以利用模块的特性，曲线的实现私有方法。另外有一种就是利用Symbol值的唯一性，这里借用一下阮一峰老师书中的例子。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> bar = <span class="built_in">Symbol</span>(<span class="string">'bar'</span>);</span><br><span class="line"><span class="keyword">const</span> snaf = <span class="built_in">Symbol</span>(<span class="string">'snaf'</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="class"><span class="keyword">class</span> <span class="title">myClass</span></span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 公有方法</span></span><br><span class="line">  foo(baz) &#123;</span><br><span class="line">    <span class="keyword">this</span>[bar](baz);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 私有方法</span></span><br><span class="line">  [bar](baz) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>[snaf] = baz;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// ...</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h1 id="结束"><a href="#结束" class="headerlink" title="结束"></a>结束</h1><p>es6加入了一大波新的内容，可以说是比较重要的更新，当然我想说，class都有了，private还会远吗？</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Private/" rel="tag"># Private</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/09/15/JavaScript日志控制/" rel="next" title="JavaScript日志控制">
+                <i class="fa fa-chevron-left"></i> JavaScript日志控制
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/09/23/日志控制(优化)/" rel="prev" title="日志控制(优化)">
+                日志控制(优化) <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="/images/avatar.jpg" alt="王曉波">
+          <p class="site-author-name" itemprop="name">王曉波</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p><h3>&lt;h1&gt; Code is poetry. &lt;/h1&gt;</h3><p></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">20</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">20</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://www.github.com/SeanWangx" target="_blank" title="Github">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                    
+                      Github
+                    
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-block">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              Links
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://blog.yuantang.site/" title="TangGe's blog" target="_blank">TangGe's blog</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#私有属性"><span class="nav-number">2.</span> <span class="nav-text">私有属性</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#function中的私有属性"><span class="nav-number">2.1.</span> <span class="nav-text">function中的私有属性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#class中的私有属性"><span class="nav-number">2.2.</span> <span class="nav-text">class中的私有属性</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#私有方法"><span class="nav-number">3.</span> <span class="nav-text">私有方法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#function中的私有方法"><span class="nav-number">3.1.</span> <span class="nav-text">function中的私有方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#class中的私有方法"><span class="nav-number">3.2.</span> <span class="nav-text">class中的私有方法</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#结束"><span class="nav-number">4.</span> <span class="nav-text">结束</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">王曉波</span>
+
+  
+</div>
+
+
+  <div class="powered-by">
+    由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+  </div>
+
+  <span class="post-meta-divider">|</span>
+
+  <div class="theme-info">
+    主题 &mdash;
+    <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+      NexT.Muse
+    </a>
+  </div>
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="Webpack,">
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico?v=5.1.2">
+
+
+
+
+
+
+<meta name="description" content="现在的前端技术日新月异，同时一些配套开发工具的出现也使得前端的门槛在慢慢变高，可不得不承认，开发工具的使用对于效率的提高有着巨大的促进作用。本文通过一个小的demo来介绍一下webpack的实际用法，这里对于npm的命令就不做过多介绍了，默认大家都有包管理的经验。 安装与运行安装分为全局安装和项目内安装 12npm install webpack -g // 全局安装npm install web">
+<meta name="keywords" content="Webpack">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Webpack简单入门">
+<meta property="og:url" content="https://seanwangx.github.io/2017/03/12/Webpack简单入门/index.html">
+<meta property="og:site_name" content="Sean Wangx">
+<meta property="og:description" content="现在的前端技术日新月异，同时一些配套开发工具的出现也使得前端的门槛在慢慢变高，可不得不承认，开发工具的使用对于效率的提高有着巨大的促进作用。本文通过一个小的demo来介绍一下webpack的实际用法，这里对于npm的命令就不做过多介绍了，默认大家都有包管理的经验。 安装与运行安装分为全局安装和项目内安装 12npm install webpack -g // 全局安装npm install web">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-02-09T07:11:17.305Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Webpack简单入门">
+<meta name="twitter:description" content="现在的前端技术日新月异，同时一些配套开发工具的出现也使得前端的门槛在慢慢变高，可不得不承认，开发工具的使用对于效率的提高有着巨大的促进作用。本文通过一个小的demo来介绍一下webpack的实际用法，这里对于npm的命令就不做过多介绍了，默认大家都有包管理的经验。 安装与运行安装分为全局安装和项目内安装 12npm install webpack -g // 全局安装npm install web">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://seanwangx.github.io/2017/03/12/Webpack简单入门/">
+
+
+
+
+
+  <title>Webpack简单入门 | Sean Wangx</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Sean Wangx</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://seanwangx.github.io/2017/03/12/Webpack简单入门/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="王曉波">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sean Wangx">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Webpack简单入门</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-03-12T19:06:03+08:00">
+                2017-03-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/frontend/" itemprop="url" rel="index">
+                    <span itemprop="name">frontend</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>现在的前端技术日新月异，同时一些配套开发工具的出现也使得前端的门槛在慢慢变高，可不得不承认，开发工具的使用对于效率的提高有着巨大的促进作用。本文通过一个小的demo来介绍一下webpack的实际用法，这里对于npm的命令就不做过多介绍了，默认大家都有包管理的经验。</p>
+<h2 id="安装与运行"><a href="#安装与运行" class="headerlink" title="安装与运行"></a>安装与运行</h2><p>安装分为全局安装和项目内安装</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">npm install webpack -g // 全局安装</span><br><span class="line">npm install webpack // 本项目内安装</span><br></pre></td></tr></table></figure>
+<p>全局安装主要便于本地调试，项目内安装便于在node环境下进行编译操作，因为现在版本已经到了2.x，所以这里全都使用webpack2.0的配置格式。</p>
+<p>在全局安装了webpack后就可以在命令行中运行webpack命令了，当然可以加一些参数：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">webpack --progress --colors --watchs --config webpack.config.js</span><br></pre></td></tr></table></figure>
+<a id="more"></a>
+<p>这里使用了四个参数，这里简单介绍一下什么意思</p>
+<ul>
+<li>–progress: 在编译的过程中给出一些必要的状态提示，便于用户查看当前打包编译进度</li>
+<li>–colors: 以可分辨的颜色表示给出的命令信息</li>
+<li>–watchs: 事实查看打包内容的状态，所有的修改都会实时反映出来</li>
+<li>–config: 指定打包编译的配置文件，值得一提的是如果不配置这项参数，webpack命令也会自己去寻找名为webpack.config.js的配置文件</li>
+</ul>
+<p>附加的参数有很多，如果想要查看所有的参数信息可以直接命令行输入</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">webpack -h</span><br></pre></td></tr></table></figure>
+<h2 id="webpack配置"><a href="#webpack配置" class="headerlink" title="webpack配置"></a>webpack配置</h2><p>之前提到webpack命令会默认以’webpack.config.js’命名的文件作为配置去执行运行工作，作为node环境下的js文件，使用的是常用的CommonJS</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">  <span class="comment">// entry: ...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>后面的配置中可能会使用到某些模块，所以在文件的开头可以导入需要加载的模块</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> path = <span class="built_in">require</span>(<span class="string">'path'</span>); <span class="comment">// npm内置模块，处理路径</span></span><br><span class="line"><span class="keyword">var</span> HtmlWebpackPlugin = <span class="built_in">require</span>(<span class="string">'html-webpack-plugin'</span>); <span class="comment">// 页面文件插件</span></span><br><span class="line"><span class="keyword">var</span> webpack = <span class="built_in">require</span>(<span class="string">'webpack'</span>); <span class="comment">// 项目内安装的webpack模块</span></span><br></pre></td></tr></table></figure>
+<h3 id="entry"><a href="#entry" class="headerlink" title="entry"></a>entry</h3><p>指定入口文件，这里可以是一个字符串参数，或者一个包含多个字符串的数据，甚至是一个Object，格式如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 单文件入口</span></span><br><span class="line">entry: <span class="string">'main.js'</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 数组多文件入口</span></span><br><span class="line">entry: [<span class="string">'mainA.js'</span>, <span class="string">'mianB.js'</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment">// 对象入口</span></span><br><span class="line">entry: &#123;</span><br><span class="line">  mainA: <span class="string">'mainA.js'</span>,</span><br><span class="line">  mainB: <span class="string">'mainB.js'</span></span><br></pre></td></tr></table></figure>
+<p>上面的三种都是有效的配置方式，可以按照情况自行选择。</p>
+<h3 id="output"><a href="#output" class="headerlink" title="output"></a>output</h3><p>有入口当然有出口，<strong>output</strong>就是指定输出文件的信息。详细的信息有很多，受限于篇幅这里列举几个常用有代表性的。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">output: &#123;</span><br><span class="line">  filename: <span class="string">'bundle.js'</span>,</span><br><span class="line">  path: path.resolve(__dirname, <span class="string">'/dist'</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上述的配置会将所有的js全都打包到一个bundle.js文件中，但有的时候是需要分开打包的，这个时候就需要在filename中配置一些可区分的信息，可以配置的有[name],[hash]和[chunkhash]，含义</p>
+<ul>
+<li>[name]: 入口文件名</li>
+<li>[hash]: 打包hash</li>
+<li>[chunkhash]: 打包的具体文件的hash</li>
+</ul>
+<p>使用的方法很简单</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">filename: <span class="string">'[name].[chunkhash].bundle.js'</span></span><br></pre></td></tr></table></figure>
+<h3 id="module"><a href="#module" class="headerlink" title="module"></a>module</h3><p>这是配置中的重头戏，废话不多说，在代码中注释一目了然</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">module</span>: [</span><br><span class="line">  rules: [</span><br><span class="line">    &#123;</span><br><span class="line">      test: <span class="regexp">/\.js$/</span>, <span class="comment">// 匹配以.js结尾的文件</span></span><br><span class="line">      include: path.resolve(__dirname, <span class="string">'src'</span>), <span class="comment">// 设定监听范围</span></span><br><span class="line">      exclude: <span class="regexp">/node_modules/</span>, <span class="comment">// 排除监听文件夹</span></span><br><span class="line">      use: [ <span class="comment">// 配置文件加载器</span></span><br><span class="line">        <span class="string">'babel-loader'</span>, <span class="comment">// 转换模块中的es6语法</span></span><br><span class="line">        <span class="string">'eslint-loader'</span> <span class="comment">// 语法校验</span></span><br><span class="line">      ]</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 其他文件的规则</span></span><br><span class="line">  ] </span><br><span class="line">  </span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+<p>当然module内部的配置限于这里列出来的，但是这是最常用的配置格式，可以作为参考。</p>
+<h3 id="resolve"><a href="#resolve" class="headerlink" title="resolve"></a>resolve</h3><p>resolve配置的是项目文件中需要解析的部分，比如本项目中需要导入vue模块，使用的命令简化如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> Vue <span class="keyword">from</span> <span class="string">'vue'</span>;</span><br></pre></td></tr></table></figure>
+<p>但实际上文件位置和需要导入的模块并不在同级目录下，这个时候就需要配置解析</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">resolve: &#123;</span><br><span class="line">  extensions: [<span class="string">".js"</span>, <span class="string">".vue"</span>],</span><br><span class="line">  alias: &#123;</span><br><span class="line">    <span class="string">'vue$'</span>: <span class="string">'vue/dist/vue.js'</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>实际上需要导入的是vue.js而不是vue，但是配置了extensions后就可以省略这些，这样一点小改动能最大化提升开发效率。<br>而alias配置了’别名’,它将需要的绝对路径转化别一个别名提供给需要导入相关模块的地方，在这里就使用到了vue。</p>
+<h3 id="plugins"><a href="#plugins" class="headerlink" title="plugins"></a>plugins</h3><p>插件的存在让配置更加方便，比如我要使用ejs模板生成所需的页面，同时将打包后的js文件自动注入到html文件中，这个时候使用html-webpack-plugin是个不错的选择</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">plugins: [</span><br><span class="line">  <span class="keyword">new</span> HtmlWebpackPlugin(&#123;</span><br><span class="line">    title: <span class="string">'Webpack'</span>, <span class="comment">// 生成网页标题</span></span><br><span class="line">    filename: path.resolve(__dirname, <span class="string">'index.html'</span>), <span class="comment">// 生成的html文件名，可附带路径</span></span><br><span class="line">    template: path.resolve(__dirname, <span class="string">'index.tmpl.ejs'</span>) <span class="comment">// 模板文件</span></span><br><span class="line">  &#125;)</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>详细的配置还有很多需要注意的，这里只是基于webpack做一个简单的介绍，争取能最快速入门webpack的配置，详细的源码可以去这里下载：<a href="https://github.com/SeanWangx/webpack-demo" target="_blank" rel="noopener">webpack-demo</a></p>
+<p>最后若有兴趣可以查看官网或者中文网站：</p>
+<ul>
+<li><a href="https://webpack.js.org/" target="_blank" rel="noopener">英文官网</a></li>
+<li><a href="https://doc.webpack-china.org/" target="_blank" rel="noopener">中文网站</a></li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Webpack/" rel="tag"># Webpack</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/03/02/Github-push问题常见解决方法/" rel="next" title="Github push问题常见解决方法">
+                <i class="fa fa-chevron-left"></i> Github push问题常见解决方法
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/03/24/window-onload拓展/" rel="prev" title="window.onload拓展">
+                window.onload拓展 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="/images/avatar.jpg" alt="王曉波">
+          <p class="site-author-name" itemprop="name">王曉波</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p><h3>&lt;h1&gt; Code is poetry. &lt;/h1&gt;</h3><p></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">20</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">20</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://www.github.com/SeanWangx" target="_blank" title="Github">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                    
+                      Github
+                    
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-block">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              Links
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://blog.yuantang.site/" title="TangGe's blog" target="_blank">TangGe's blog</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#安装与运行"><span class="nav-number">1.</span> <span class="nav-text">安装与运行</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#webpack配置"><span class="nav-number">2.</span> <span class="nav-text">webpack配置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#entry"><span class="nav-number">2.1.</span> <span class="nav-text">entry</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#output"><span class="nav-number">2.2.</span> <span class="nav-text">output</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#module"><span class="nav-number">2.3.</span> <span class="nav-text">module</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#resolve"><span class="nav-number">2.4.</span> <span class="nav-text">resolve</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#plugins"><span class="nav-number">2.5.</span> <span class="nav-text">plugins</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">3.</span> <span class="nav-text">总结</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">王曉波</span>
+
+  
+</div>
+
+
+  <div class="powered-by">
+    由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+  </div>
+
+  <span class="post-meta-divider">|</span>
+
+  <div class="theme-info">
+    主题 &mdash;
+    <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+      NexT.Muse
+    </a>
+  </div>
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

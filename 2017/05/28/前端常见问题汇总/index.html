@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="Interview,">
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico?v=5.1.2">
+
+
+
+
+
+
+<meta name="description" content="面试常见问题汇总——————–2017.05.28更新——————–Ajax的优缺点都有什么？优点:  页面无刷新，用户体验非常好。 使用异步方式与服务器通信，具有更加迅速的响应能力。 可以把一些服务器负担的工作转到客户端，利用客户端闲置的能力来处理，减轻服务器负担，节约空间和宽带租用成本。并且减轻服务器的负担，ajax的原则是“按需取数据”，可以最大程度的减少冗余请求和响应对服务器造成的负担。">
+<meta name="keywords" content="Interview">
+<meta property="og:type" content="article">
+<meta property="og:title" content="前端常见问题汇总">
+<meta property="og:url" content="https://seanwangx.github.io/2017/05/28/前端常见问题汇总/index.html">
+<meta property="og:site_name" content="Sean Wangx">
+<meta property="og:description" content="面试常见问题汇总——————–2017.05.28更新——————–Ajax的优缺点都有什么？优点:  页面无刷新，用户体验非常好。 使用异步方式与服务器通信，具有更加迅速的响应能力。 可以把一些服务器负担的工作转到客户端，利用客户端闲置的能力来处理，减轻服务器负担，节约空间和宽带租用成本。并且减轻服务器的负担，ajax的原则是“按需取数据”，可以最大程度的减少冗余请求和响应对服务器造成的负担。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-02-09T07:11:17.315Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="前端常见问题汇总">
+<meta name="twitter:description" content="面试常见问题汇总——————–2017.05.28更新——————–Ajax的优缺点都有什么？优点:  页面无刷新，用户体验非常好。 使用异步方式与服务器通信，具有更加迅速的响应能力。 可以把一些服务器负担的工作转到客户端，利用客户端闲置的能力来处理，减轻服务器负担，节约空间和宽带租用成本。并且减轻服务器的负担，ajax的原则是“按需取数据”，可以最大程度的减少冗余请求和响应对服务器造成的负担。">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://seanwangx.github.io/2017/05/28/前端常见问题汇总/">
+
+
+
+
+
+  <title>前端常见问题汇总 | Sean Wangx</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Sean Wangx</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://seanwangx.github.io/2017/05/28/前端常见问题汇总/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="王曉波">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sean Wangx">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">前端常见问题汇总</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-28T00:43:11+08:00">
+                2017-05-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/frontend/" itemprop="url" rel="index">
+                    <span itemprop="name">frontend</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="面试常见问题汇总"><a href="#面试常见问题汇总" class="headerlink" title="面试常见问题汇总"></a>面试常见问题汇总</h1><h2 id="——————–2017-05-28更新——————–"><a href="#——————–2017-05-28更新——————–" class="headerlink" title="——————–2017.05.28更新——————–"></a>——————–2017.05.28更新——————–</h2><h3 id="Ajax的优缺点都有什么？"><a href="#Ajax的优缺点都有什么？" class="headerlink" title="Ajax的优缺点都有什么？"></a>Ajax的优缺点都有什么？</h3><p>优点:</p>
+<ul>
+<li>页面无刷新，用户体验非常好。</li>
+<li>使用异步方式与服务器通信，具有更加迅速的响应能力。</li>
+<li>可以把一些服务器负担的工作转到客户端，利用客户端闲置的能力来处理，减轻服务器负担，节约空间和宽带租用成本。并且减轻服务器的负担，ajax的原则是“按需取数据”，可以最大程度的减少冗余请求和响应对服务器造成的负担。</li>
+<li>基于标准化并被广泛支持的技术，不需要下载插件或者小程序。</li>
+</ul>
+<a id="more"></a>
+<p>缺点:</p>
+<ul>
+<li>Ajax不支持浏览器back按钮。</li>
+<li>安全问题， Ajax暴露了与服务器交互的细节。</li>
+<li>对搜索引擎的支持比较弱。</li>
+<li>破坏了程序的异常机制。</li>
+<li>不容易调试。</li>
+</ul>
+<h3 id="简述一下Ajax的工作原理"><a href="#简述一下Ajax的工作原理" class="headerlink" title="简述一下Ajax的工作原理"></a>简述一下Ajax的工作原理</h3><p>Ajax的核心是JavaScript对象XmlHttpRequest。该对象在Internet Explorer 5中首次引入，它是一种支持异步请求的技术。简而言之，XmlHttpRequest使您可以使用JavaScript向服务器提出请求并处理响应，而不阻塞用户。</p>
+<h3 id="CSS-DIV开发Web页面的优势有哪些？"><a href="#CSS-DIV开发Web页面的优势有哪些？" class="headerlink" title="CSS+DIV开发Web页面的优势有哪些？"></a>CSS+DIV开发Web页面的优势有哪些？</h3><ul>
+<li>CSS+DIV，这个网页设计模式中，DIV承担了网页的内容，CSS承担了网页的样式。这样就使网页的内容和样式的分离开来。有利于页面的维护升级。</li>
+<li>有助于提高搜索引擎亲和力（快速找到需要的数据，而不是像在TABLE中一层层的查找）</li>
+<li>有助于页面的重构(换皮肤如blog，直接套用另外一套样式就可以实现，而不用改动网页脚本。)</li>
+</ul>
+<h3 id="简述DIV元素和SPAN元素的区别"><a href="#简述DIV元素和SPAN元素的区别" class="headerlink" title="简述DIV元素和SPAN元素的区别"></a>简述DIV元素和SPAN元素的区别</h3><p>DIV默认情况下是分行显示，SPAN在同行显示。</p>
+<h3 id="个人思考题"><a href="#个人思考题" class="headerlink" title="个人思考题"></a>个人思考题</h3><h4 id="前端安全方面有没有了解？CSRF如何攻防？"><a href="#前端安全方面有没有了解？CSRF如何攻防？" class="headerlink" title="前端安全方面有没有了解？CSRF如何攻防？"></a>前端安全方面有没有了解？CSRF如何攻防？</h4><h4 id="说说你对SVG理解"><a href="#说说你对SVG理解" class="headerlink" title="说说你对SVG理解?"></a>说说你对SVG理解?</h4><h2 id="——————–2017-05-27更新——————–"><a href="#——————–2017-05-27更新——————–" class="headerlink" title="——————–2017.05.27更新——————–"></a>——————–2017.05.27更新——————–</h2><h3 id="清除浮动的几种方式，各自的优缺点"><a href="#清除浮动的几种方式，各自的优缺点" class="headerlink" title="清除浮动的几种方式，各自的优缺点"></a>清除浮动的几种方式，各自的优缺点</h3><ul>
+<li>使用空标签清除浮动 clear:both（理论上能清楚任何标签，增加无意义的标签）</li>
+<li>使用overflow:auto（空标签元素清除浮动而不得不增加无意代码的弊端,,使用zoom:1用于兼容IE）</li>
+<li>是用afert伪元素清除浮动(用于非IE浏览器)</li>
+</ul>
+<h3 id="call和apply的区别"><a href="#call和apply的区别" class="headerlink" title="call和apply的区别"></a>call和apply的区别</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Object.call(this,obj1,obj2,obj3)</span><br><span class="line">Object.apply(this,arguments)</span><br></pre></td></tr></table></figure>
+<h3 id="lt-img-gt-标签上title与alt属性的区别是什么？"><a href="#lt-img-gt-标签上title与alt属性的区别是什么？" class="headerlink" title="&lt;img&gt;标签上title与alt属性的区别是什么？"></a>&lt;img&gt;标签上title与alt属性的区别是什么？</h3><ul>
+<li>Alt 当图片不显示是 用文字代表。</li>
+<li>Title 为该属性提供信息</li>
+</ul>
+<h3 id="什么是语义化的HTML？"><a href="#什么是语义化的HTML？" class="headerlink" title="什么是语义化的HTML？"></a>什么是语义化的HTML？</h3><p>直观的认识标签 对于搜索引擎的抓取有好处</p>
+<h3 id="个人思考题-1"><a href="#个人思考题-1" class="headerlink" title="个人思考题"></a>个人思考题</h3><h4 id="请说出三种减少页面加载时间的方法。（加载时间指感知的时间或者实际加载时间）"><a href="#请说出三种减少页面加载时间的方法。（加载时间指感知的时间或者实际加载时间）" class="headerlink" title="请说出三种减少页面加载时间的方法。（加载时间指感知的时间或者实际加载时间）"></a>请说出三种减少页面加载时间的方法。（加载时间指感知的时间或者实际加载时间）</h4><h4 id="描述下”reset”CSS文件的作用和使用它的好处。"><a href="#描述下”reset”CSS文件的作用和使用它的好处。" class="headerlink" title="描述下”reset”CSS文件的作用和使用它的好处。"></a>描述下”reset”CSS文件的作用和使用它的好处。</h4><h2 id="——————–2017-05-26更新——————–"><a href="#——————–2017-05-26更新——————–" class="headerlink" title="——————–2017.05.26更新——————–"></a>——————–2017.05.26更新——————–</h2><h3 id="优先级算法如何计算？"><a href="#优先级算法如何计算？" class="headerlink" title="优先级算法如何计算？"></a>优先级算法如何计算？</h3><p>重要性和来源的优先级排序从低到高是：</p>
+<ul>
+<li>浏览器默认样式</li>
+<li>用户在浏览器中定义的普通样式（normal规则，不带important规则</li>
+<li>开发人员定义的普通样式（ normal规则，不带important规则）</li>
+<li>开发人员定义特殊样式（带important规则)</li>
+<li>用户在浏览器中定义特殊样式（带important规则)</li>
+<li>另外还有一些原则：</li>
+</ul>
+<ol>
+<li>相同的样式在CSS规则后添加了!important的优先于没有添加的。</li>
+<li>CSS规则在文档中出现的顺序后面定义的的优先于前面定义的。</li>
+<li>加了!important的优先于内联样式。</li>
+<li>内联样式优先于用link引入的样式和页面上&lt;style&gt;里的样式。</li>
+</ol>
+<h3 id="split-join-的区别"><a href="#split-join-的区别" class="headerlink" title="split() join() 的区别?"></a>split() join() 的区别?</h3><p>前者是切割成数组的形式，后者是将数组转换成字符串</p>
+<h3 id="ajax请求的时候get-和post方式的区别"><a href="#ajax请求的时候get-和post方式的区别" class="headerlink" title="ajax请求的时候get 和post方式的区别?"></a>ajax请求的时候get 和post方式的区别?</h3><ul>
+<li>一个在url后面 一个放在虚拟载体里面</li>
+<li>有大小限制</li>
+<li>安全问题</li>
+<li>应用不同 一个是论坛等只需要请求的，一个是类似修改密码的</li>
+</ul>
+<h3 id="IE和标准下有哪些兼容性的写法？"><a href="#IE和标准下有哪些兼容性的写法？" class="headerlink" title="IE和标准下有哪些兼容性的写法？"></a>IE和标准下有哪些兼容性的写法？</h3><ul>
+<li>var ev = ev || window.event</li>
+<li>document.documentElement.clientWidth || document.body.clientWidth</li>
+<li>var target = ev.srcElement || ev.target</li>
+</ul>
+<h3 id="个人思考题-2"><a href="#个人思考题-2" class="headerlink" title="个人思考题"></a>个人思考题</h3><h4 id="说一下你理解的MVVM，画一下你的设计模式。"><a href="#说一下你理解的MVVM，画一下你的设计模式。" class="headerlink" title="说一下你理解的MVVM，画一下你的设计模式。"></a>说一下你理解的MVVM，画一下你的设计模式。</h4><h4 id="说一下h5中的离线存储有哪些"><a href="#说一下h5中的离线存储有哪些" class="headerlink" title="说一下h5中的离线存储有哪些?"></a>说一下h5中的离线存储有哪些?</h4><h2 id="——————–2017-05-25更新——————–"><a href="#——————–2017-05-25更新——————–" class="headerlink" title="——————–2017.05.25更新——————–"></a>——————–2017.05.25更新——————–</h2><h3 id="XHTM和HTML有什么区别"><a href="#XHTM和HTML有什么区别" class="headerlink" title="XHTM和HTML有什么区别"></a>XHTM和HTML有什么区别</h3><p>HTML是一种基本的WEB网页设计语言，XHTML是一个基于XML的置标语言，最主要的不同：</p>
+<ul>
+<li>XHTML 元素必须被正确地嵌套。</li>
+<li>XHTML 元素必须被关闭。</li>
+<li>标签名必须用小写字母。</li>
+<li>XHTML 文档必须拥有根元素。</li>
+</ul>
+<h3 id="Doctype-严格模式与混杂模式-如何触发这两种模式，区分它们有何意义"><a href="#Doctype-严格模式与混杂模式-如何触发这两种模式，区分它们有何意义" class="headerlink" title="Doctype? 严格模式与混杂模式-如何触发这两种模式，区分它们有何意义?"></a>Doctype? 严格模式与混杂模式-如何触发这两种模式，区分它们有何意义?</h3><p>用于声明文档使用那种规范（html/Xhtml）一般为 严格 过度 基于框架的html文档，加入XMl声明可触发，解析方式更改为IE5.5 拥有IE5.5的bug</p>
+<h3 id="写出几种IE6-BUG的解决方法"><a href="#写出几种IE6-BUG的解决方法" class="headerlink" title="写出几种IE6 BUG的解决方法"></a>写出几种IE6 BUG的解决方法</h3><ul>
+<li>双边距BUG float引起的 使用display</li>
+<li>3像素问题 使用float引起的 使用dislpay:inline -3px</li>
+<li>超链接hover 点击后失效 使用正确的书写顺序 link visited hover active</li>
+<li>Ie z-index问题 给父级添加position:relative</li>
+<li>Png 透明 使用js代码 改</li>
+<li>Min-height 最小高度 ！Important 解决’</li>
+<li>select 在ie6下遮盖 使用iframe嵌套</li>
+<li>为什么没有办法定义1px左右的宽度容器（IE6默认的行高造成的，使用over:hidden,zoom:0.08 line-height:1px）</li>
+</ul>
+<h3 id="IE和DOM事件流的区别"><a href="#IE和DOM事件流的区别" class="headerlink" title="IE和DOM事件流的区别"></a>IE和DOM事件流的区别</h3><ul>
+<li>执行顺序不一样、</li>
+<li>参数不一样</li>
+<li>事件加不加on</li>
+<li>this指向问题</li>
+</ul>
+<h3 id="个人思考题-3"><a href="#个人思考题-3" class="headerlink" title="个人思考题"></a>个人思考题</h3><h4 id="谈一谈你做过的一个项目，业务逻辑模块如何划分的？"><a href="#谈一谈你做过的一个项目，业务逻辑模块如何划分的？" class="headerlink" title="谈一谈你做过的一个项目，业务逻辑模块如何划分的？"></a>谈一谈你做过的一个项目，业务逻辑模块如何划分的？</h4><h4 id="什么是xss漏洞，怎么防御？"><a href="#什么是xss漏洞，怎么防御？" class="headerlink" title="什么是xss漏洞，怎么防御？"></a>什么是xss漏洞，怎么防御？</h4><h2 id="——————–2017-05-24更新——————–"><a href="#——————–2017-05-24更新——————–" class="headerlink" title="——————–2017.05.24更新——————–"></a>——————–2017.05.24更新——————–</h2><h3 id="CSS引入的方式有哪些？"><a href="#CSS引入的方式有哪些？" class="headerlink" title="CSS引入的方式有哪些？"></a>CSS引入的方式有哪些？</h3><p>CSS与HTML文档结合有4种方法：</p>
+<ul>
+<li>使用&lt;link&gt;元素链接到外部的样式文件</li>
+<li>在&lt;head&gt;元素中使用”style”元素来指定</li>
+<li>使用CSS的”@import”标记来导入样式表单</li>
+<li>在&lt;body&gt;内部的元素中使用”style”属性来定义样式</li>
+</ul>
+<h3 id="行内元素有哪些？块级元素有哪些？"><a href="#行内元素有哪些？块级元素有哪些？" class="headerlink" title="行内元素有哪些？块级元素有哪些？"></a>行内元素有哪些？块级元素有哪些？</h3><ul>
+<li>行内元素: a b br i span input select</li>
+<li>块级元素: div p h1 h2 h3 h4 h5 h6 form ul</li>
+</ul>
+<h3 id="CSS盒模型？"><a href="#CSS盒模型？" class="headerlink" title="CSS盒模型？"></a>CSS盒模型？</h3><p>margin, border, padding, content</p>
+<h3 id="link和-import的区别？"><a href="#link和-import的区别？" class="headerlink" title="link和@import的区别？"></a>link和@import的区别？</h3><p>本质上，这两种方式都是为了加载CSS文件，但还是存在着细微的差别。</p>
+<ul>
+<li>老祖宗的差别。link属于XHTML标签，而@import完全是CSS提供的一种方式。link标签除了可以加载CSS外，还可以做很多其它的事情，比如定义RSS，定义rel连接属性等，@import就只能加载CSS了。</li>
+<li>加载顺序的差别。当一个页面被加载的时候（就是被浏览者浏览的时候），link引用的CSS会同时被加载，而@import引用的CSS会等到页面全部被下载完再被加载。</li>
+<li>兼容性的差别。由于@import是CSS2.1提出的所以老的浏览器不支持，@import只有在IE5以上的才能识别，而link标签无此问题。</li>
+<li>使用dom控制样式时的差别。当使用javascript控制dom去改变样式的时候，只能使用link标签，因为@import不是dom可以控制的。</li>
+</ul>
+<h3 id="“-”和”-”的不同"><a href="#“-”和”-”的不同" class="headerlink" title="“==”和”===”的不同"></a>“==”和”===”的不同</h3><p>前者会自动转换类型，后者不会，可简单理解为前者值相等，后者值与类型都相等</p>
+<h3 id="个人思考题-4"><a href="#个人思考题-4" class="headerlink" title="个人思考题"></a>个人思考题</h3><h4 id="你之前自认为做的最好的，最具有挑战的一项需求是什么，为什么？现在回头去看，还有哪些地方可以值得优化？"><a href="#你之前自认为做的最好的，最具有挑战的一项需求是什么，为什么？现在回头去看，还有哪些地方可以值得优化？" class="headerlink" title="你之前自认为做的最好的，最具有挑战的一项需求是什么，为什么？现在回头去看，还有哪些地方可以值得优化？"></a>你之前自认为做的最好的，最具有挑战的一项需求是什么，为什么？现在回头去看，还有哪些地方可以值得优化？</h4><h4 id="说一下h5中的离线存储有哪些？"><a href="#说一下h5中的离线存储有哪些？" class="headerlink" title="说一下h5中的离线存储有哪些？"></a>说一下h5中的离线存储有哪些？</h4><ul>
+<li>sessionStorage</li>
+<li>localStorage</li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Interview/" rel="tag"># Interview</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/03/27/JavaScript之this/" rel="next" title="JavaScript之this">
+                <i class="fa fa-chevron-left"></i> JavaScript之this
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/07/21/函数式编程之简易render/" rel="prev" title="函数式编程之简易render">
+                函数式编程之简易render <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="/images/avatar.jpg" alt="王曉波">
+          <p class="site-author-name" itemprop="name">王曉波</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p><h3>&lt;h1&gt; Code is poetry. &lt;/h1&gt;</h3><p></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">20</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">20</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://www.github.com/SeanWangx" target="_blank" title="Github">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                    
+                      Github
+                    
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-block">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              Links
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://blog.yuantang.site/" title="TangGe's blog" target="_blank">TangGe's blog</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#面试常见问题汇总"><span class="nav-number">1.</span> <span class="nav-text">面试常见问题汇总</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#——————–2017-05-28更新——————–"><span class="nav-number">1.1.</span> <span class="nav-text">——————–2017.05.28更新——————–</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Ajax的优缺点都有什么？"><span class="nav-number">1.1.1.</span> <span class="nav-text">Ajax的优缺点都有什么？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#简述一下Ajax的工作原理"><span class="nav-number">1.1.2.</span> <span class="nav-text">简述一下Ajax的工作原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CSS-DIV开发Web页面的优势有哪些？"><span class="nav-number">1.1.3.</span> <span class="nav-text">CSS+DIV开发Web页面的优势有哪些？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#简述DIV元素和SPAN元素的区别"><span class="nav-number">1.1.4.</span> <span class="nav-text">简述DIV元素和SPAN元素的区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#个人思考题"><span class="nav-number">1.1.5.</span> <span class="nav-text">个人思考题</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#前端安全方面有没有了解？CSRF如何攻防？"><span class="nav-number">1.1.5.1.</span> <span class="nav-text">前端安全方面有没有了解？CSRF如何攻防？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#说说你对SVG理解"><span class="nav-number">1.1.5.2.</span> <span class="nav-text">说说你对SVG理解?</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#——————–2017-05-27更新——————–"><span class="nav-number">1.2.</span> <span class="nav-text">——————–2017.05.27更新——————–</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#清除浮动的几种方式，各自的优缺点"><span class="nav-number">1.2.1.</span> <span class="nav-text">清除浮动的几种方式，各自的优缺点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#call和apply的区别"><span class="nav-number">1.2.2.</span> <span class="nav-text">call和apply的区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lt-img-gt-标签上title与alt属性的区别是什么？"><span class="nav-number">1.2.3.</span> <span class="nav-text">&lt;img&gt;标签上title与alt属性的区别是什么？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#什么是语义化的HTML？"><span class="nav-number">1.2.4.</span> <span class="nav-text">什么是语义化的HTML？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#个人思考题-1"><span class="nav-number">1.2.5.</span> <span class="nav-text">个人思考题</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#请说出三种减少页面加载时间的方法。（加载时间指感知的时间或者实际加载时间）"><span class="nav-number">1.2.5.1.</span> <span class="nav-text">请说出三种减少页面加载时间的方法。（加载时间指感知的时间或者实际加载时间）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#描述下”reset”CSS文件的作用和使用它的好处。"><span class="nav-number">1.2.5.2.</span> <span class="nav-text">描述下”reset”CSS文件的作用和使用它的好处。</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#——————–2017-05-26更新——————–"><span class="nav-number">1.3.</span> <span class="nav-text">——————–2017.05.26更新——————–</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#优先级算法如何计算？"><span class="nav-number">1.3.1.</span> <span class="nav-text">优先级算法如何计算？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#split-join-的区别"><span class="nav-number">1.3.2.</span> <span class="nav-text">split() join() 的区别?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ajax请求的时候get-和post方式的区别"><span class="nav-number">1.3.3.</span> <span class="nav-text">ajax请求的时候get 和post方式的区别?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#IE和标准下有哪些兼容性的写法？"><span class="nav-number">1.3.4.</span> <span class="nav-text">IE和标准下有哪些兼容性的写法？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#个人思考题-2"><span class="nav-number">1.3.5.</span> <span class="nav-text">个人思考题</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#说一下你理解的MVVM，画一下你的设计模式。"><span class="nav-number">1.3.5.1.</span> <span class="nav-text">说一下你理解的MVVM，画一下你的设计模式。</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#说一下h5中的离线存储有哪些"><span class="nav-number">1.3.5.2.</span> <span class="nav-text">说一下h5中的离线存储有哪些?</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#——————–2017-05-25更新——————–"><span class="nav-number">1.4.</span> <span class="nav-text">——————–2017.05.25更新——————–</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#XHTM和HTML有什么区别"><span class="nav-number">1.4.1.</span> <span class="nav-text">XHTM和HTML有什么区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Doctype-严格模式与混杂模式-如何触发这两种模式，区分它们有何意义"><span class="nav-number">1.4.2.</span> <span class="nav-text">Doctype? 严格模式与混杂模式-如何触发这两种模式，区分它们有何意义?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#写出几种IE6-BUG的解决方法"><span class="nav-number">1.4.3.</span> <span class="nav-text">写出几种IE6 BUG的解决方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#IE和DOM事件流的区别"><span class="nav-number">1.4.4.</span> <span class="nav-text">IE和DOM事件流的区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#个人思考题-3"><span class="nav-number">1.4.5.</span> <span class="nav-text">个人思考题</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#谈一谈你做过的一个项目，业务逻辑模块如何划分的？"><span class="nav-number">1.4.5.1.</span> <span class="nav-text">谈一谈你做过的一个项目，业务逻辑模块如何划分的？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#什么是xss漏洞，怎么防御？"><span class="nav-number">1.4.5.2.</span> <span class="nav-text">什么是xss漏洞，怎么防御？</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#——————–2017-05-24更新——————–"><span class="nav-number">1.5.</span> <span class="nav-text">——————–2017.05.24更新——————–</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#CSS引入的方式有哪些？"><span class="nav-number">1.5.1.</span> <span class="nav-text">CSS引入的方式有哪些？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#行内元素有哪些？块级元素有哪些？"><span class="nav-number">1.5.2.</span> <span class="nav-text">行内元素有哪些？块级元素有哪些？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CSS盒模型？"><span class="nav-number">1.5.3.</span> <span class="nav-text">CSS盒模型？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#link和-import的区别？"><span class="nav-number">1.5.4.</span> <span class="nav-text">link和@import的区别？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#“-”和”-”的不同"><span class="nav-number">1.5.5.</span> <span class="nav-text">“==”和”===”的不同</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#个人思考题-4"><span class="nav-number">1.5.6.</span> <span class="nav-text">个人思考题</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#你之前自认为做的最好的，最具有挑战的一项需求是什么，为什么？现在回头去看，还有哪些地方可以值得优化？"><span class="nav-number">1.5.6.1.</span> <span class="nav-text">你之前自认为做的最好的，最具有挑战的一项需求是什么，为什么？现在回头去看，还有哪些地方可以值得优化？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#说一下h5中的离线存储有哪些？"><span class="nav-number">1.5.6.2.</span> <span class="nav-text">说一下h5中的离线存储有哪些？</span></a></li></ol></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">王曉波</span>
+
+  
+</div>
+
+
+  <div class="powered-by">
+    由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+  </div>
+
+  <span class="post-meta-divider">|</span>
+
+  <div class="theme-info">
+    主题 &mdash;
+    <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+      NexT.Muse
+    </a>
+  </div>
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

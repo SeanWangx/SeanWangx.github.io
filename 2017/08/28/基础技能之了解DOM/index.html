@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="Html,DOM,">
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico?v=5.1.2">
+
+
+
+
+
+
+<meta name="description" content="前言虽然从接触WEB开发开始就不可避免的和DOM打交道，但是并没有真正地对DOM进行好好学习，我觉得DOM相关知识虽然基础，但还是需要好好梳理一下。 DOM解析DOM（Document Object Model）——文档对象模型，实质上是一套对文档内容进行抽象河概念化的方法，通常我们用树模型来进行辅助理解，所有的内容可以理解为树上的树枝，或者树叶，一般称作——节点。">
+<meta name="keywords" content="Html,DOM">
+<meta property="og:type" content="article">
+<meta property="og:title" content="了解DOM">
+<meta property="og:url" content="https://seanwangx.github.io/2017/08/28/基础技能之了解DOM/index.html">
+<meta property="og:site_name" content="Sean Wangx">
+<meta property="og:description" content="前言虽然从接触WEB开发开始就不可避免的和DOM打交道，但是并没有真正地对DOM进行好好学习，我觉得DOM相关知识虽然基础，但还是需要好好梳理一下。 DOM解析DOM（Document Object Model）——文档对象模型，实质上是一套对文档内容进行抽象河概念化的方法，通常我们用树模型来进行辅助理解，所有的内容可以理解为树上的树枝，或者树叶，一般称作——节点。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://owrp8nrmy.bkt.clouddn.com/node-relationship.png">
+<meta property="og:updated_time" content="2019-02-09T07:11:17.329Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="了解DOM">
+<meta name="twitter:description" content="前言虽然从接触WEB开发开始就不可避免的和DOM打交道，但是并没有真正地对DOM进行好好学习，我觉得DOM相关知识虽然基础，但还是需要好好梳理一下。 DOM解析DOM（Document Object Model）——文档对象模型，实质上是一套对文档内容进行抽象河概念化的方法，通常我们用树模型来进行辅助理解，所有的内容可以理解为树上的树枝，或者树叶，一般称作——节点。">
+<meta name="twitter:image" content="http://owrp8nrmy.bkt.clouddn.com/node-relationship.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://seanwangx.github.io/2017/08/28/基础技能之了解DOM/">
+
+
+
+
+
+  <title>了解DOM | Sean Wangx</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Sean Wangx</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://seanwangx.github.io/2017/08/28/基础技能之了解DOM/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="王曉波">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sean Wangx">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">了解DOM</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-28T17:32:06+08:00">
+                2017-08-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/frontend/" itemprop="url" rel="index">
+                    <span itemprop="name">frontend</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>虽然从接触WEB开发开始就不可避免的和DOM打交道，但是并没有真正地对DOM进行好好学习，我觉得DOM相关知识虽然基础，但还是需要好好梳理一下。</p>
+<h1 id="DOM解析"><a href="#DOM解析" class="headerlink" title="DOM解析"></a>DOM解析</h1><p>DOM（Document Object Model）——文档对象模型，实质上是一套对文档内容进行抽象河概念化的方法，通常我们用树模型来进行辅助理解，所有的内容可以理解为树上的树枝，或者树叶，一般称作——节点。</p>
+<a id="more"></a>
+<p>对于一段html，比如下面这个</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">a</span> <span class="attr">id</span>=<span class="string">"link"</span>&gt;</span>Google<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>我们很自然地将<code>a</code>标签理解为一个节点，并且可以操作它，但是我想说的是，这其中还有其他节点——<code>id=&quot;link&quot;</code>和<code>Google</code>，所以实际上DOM中有很多不同类型的节点，比较常用的有三种：</p>
+<h2 id="元素节点（element-node）"><a href="#元素节点（element-node）" class="headerlink" title="元素节点（element node）"></a>元素节点（element node）</h2><p>从字面上就可以理解，元素节点即为DOM中的各个html标签，这也是DOM的原子。同时，元素节点能包含其他的节点，比如其他元素节点，以及下面会提到的文本节点或者属性节点。</p>
+<h2 id="文本节点（text-node）"><a href="#文本节点（text-node）" class="headerlink" title="文本节点（text node）"></a>文本节点（text node）</h2><p>这个节点指的是DOM中的text部分，比如上文中的’Google’。值得一提的是，在我们编写html的时候，那些为了文档清晰所添加的回车符、换行符都是节点，有的时候在调试CSS的时候还会因为这些“看不见”的文本节点而出现难搞的问题，为了防止可能出现的问题，我一般会设置父级容器的字体大小为0。</p>
+<h2 id="属性节点（attribute-node）"><a href="#属性节点（attribute-node）" class="headerlink" title="属性节点（attribute node）"></a>属性节点（attribute node）</h2><p>属性节点常常伴随元素节点存在，对于这种类型的节点应该不会陌生，class、title等等都属于这一类型。</p>
+<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><p>一般来说，节点会以<code>nodeType</code>来区分类型，共有12种，常用的三种如下</p>
+<ul>
+<li><strong>元素节点</strong>的nodeType属性值是1</li>
+<li><strong>属性节点</strong>的nodeType属性值是2</li>
+<li><strong>文本节点</strong>的nodeType属性值是3</li>
+</ul>
+<h1 id="DOM创建"><a href="#DOM创建" class="headerlink" title="DOM创建"></a>DOM创建</h1><p>了解了基本的节点类型之后就是关于如何创建了，针对于不同节点主要有以下两种</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> p = docuement.createElement(<span class="string">'p'</span>)</span><br><span class="line"><span class="keyword">let</span> text = <span class="built_in">document</span>.createTextNode(<span class="string">'Hello World'</span>)</span><br><span class="line"></span><br><span class="line">p.appendChild(text)</span><br><span class="line"></span><br><span class="line"><span class="comment">// &lt;p&gt;Hello World!&lt;/p&gt;</span></span><br></pre></td></tr></table></figure>
+<h1 id="DOM查询"><a href="#DOM查询" class="headerlink" title="DOM查询"></a>DOM查询</h1><p>常用的DOM查询我大致分为两类——selector系类和getElement系列，以及节点间相互访问关系。在介绍两种系列的查询方式之前，先来说一下NodeList和HTMLCollection这两种会涉及到的结果集合。</p>
+<p>首先上述两种都是live的；其次，NodeList代表的是节点集合，HTMLCollection代表元素集合。不过伴随着浏览器的发展，其实现在dom标准不怎么区分core和html了。</p>
+<h2 id="selector系列"><a href="#selector系列" class="headerlink" title="selector系列"></a>selector系列</h2><p>主要有<code>querySelector</code>和<code>querySelectorAll</code>，方法接受一个CSS选择器作为参数，返回的是一个Node或者NodeList，需要注意的是，这里的NodeList是一个<strong>元素集合</strong>，并不是通常的节点集合，同时，这是一个静态集合（no-live），类似于一个快照。</p>
+<p>这里介绍一种MDN上的NodeList转Array的方法（该方法也适用于getElement系列）：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> div_list = <span class="built_in">document</span>.querySelectorAll(<span class="string">'div'</span>); <span class="comment">// 返回 NodeList</span></span><br><span class="line"><span class="keyword">var</span> div_array = <span class="built_in">Array</span>.prototype.slice.call(div_list); <span class="comment">// 将 NodeList 转换为数组</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//ES6 - Array.from();</span></span><br><span class="line"><span class="keyword">var</span> div_array_from = <span class="built_in">Array</span>.from(div_list); <span class="comment">//将 NodeList 转换为数组</span></span><br></pre></td></tr></table></figure>
+<h2 id="getElement系列"><a href="#getElement系列" class="headerlink" title="getElement系列"></a>getElement系列</h2><p>主要的方法有如下几种：</p>
+<ul>
+<li>getElementById，根据Id查找并返回单一节点对象</li>
+<li>getElementsByTagName，根据标签名查找并返回HTMLCollection对象</li>
+<li>getElementsByClassName，根据类名查找并返回HTMLCollection对象</li>
+</ul>
+<h2 id="相互访问"><a href="#相互访问" class="headerlink" title="相互访问"></a>相互访问</h2><p>节点之间也存在关系，比如前一个节点、后一个节点、父节点、子节点之类的，各个关系如下。</p>
+<p><img src="http://owrp8nrmy.bkt.clouddn.com/node-relationship.png" alt="节点关系图"></p>
+<h1 id="DOM更改"><a href="#DOM更改" class="headerlink" title="DOM更改"></a>DOM更改</h1><p>这里的DOM更改主要针对于元素节点，增、删、替换</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 添加子节点</span></span><br><span class="line">fatherNode.appendChild(childNode)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 在目标节点前插入节点</span></span><br><span class="line">sourceNode.insertBefore(targetNode)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 移除子节点</span></span><br><span class="line">fatherNode.removeChild(childNode)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 用子节点2替换子节点1</span></span><br><span class="line">fatherNode.replaceChild(childNode1, childNode2)</span><br></pre></td></tr></table></figure>
+<p>节点插入只有insertBefore，但是有的使用场景下会用到在目标节点后面插入新节点，这里贴一些我实现的insertAfter方法。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> insertAfter = <span class="function">(<span class="params">targetNode, sourceNode</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">let</span> parentNode = targetNode.parentNode</span><br><span class="line">  <span class="keyword">if</span> (!parentNode) <span class="keyword">return</span></span><br><span class="line">  <span class="keyword">let</span> nextNode = targetNode.nextSibling</span><br><span class="line">  <span class="keyword">if</span> (!nextNode) &#123;</span><br><span class="line">    parentNode.appendChild(sourceNode)</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    parentNode.insertBefore(sourceNode, nextNode)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="属性操作"><a href="#属性操作" class="headerlink" title="属性操作"></a>属性操作</h1><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 获取一个&#123;name, value&#125;的数组</span></span><br><span class="line"><span class="keyword">let</span> attrs = el.attributes;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 获取、设置属性</span></span><br><span class="line"><span class="keyword">let</span> c = el.getAttribute(<span class="string">'class'</span>);</span><br><span class="line">el.setAttribute(<span class="string">'class'</span>, <span class="string">'highlight'</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 判断、移除属性</span></span><br><span class="line">el.hasAttribute(<span class="string">'class'</span>);</span><br><span class="line">el.removeAttribute(<span class="string">'class'</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 是否有属性设置</span></span><br><span class="line">el.hasAttributes();</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Html/" rel="tag"># Html</a>
+          
+            <a href="/tags/DOM/" rel="tag"># DOM</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/08/20/当数据遇到组件嵌套/" rel="next" title="当数据遇到组件嵌套">
+                <i class="fa fa-chevron-left"></i> 当数据遇到组件嵌套
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/09/09/FingerMover踩坑/" rel="prev" title="finger-mover踩坑记录">
+                finger-mover踩坑记录 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="/images/avatar.jpg" alt="王曉波">
+          <p class="site-author-name" itemprop="name">王曉波</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p><h3>&lt;h1&gt; Code is poetry. &lt;/h1&gt;</h3><p></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">20</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">20</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://www.github.com/SeanWangx" target="_blank" title="Github">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                    
+                      Github
+                    
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-block">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              Links
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://blog.yuantang.site/" title="TangGe's blog" target="_blank">TangGe's blog</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#DOM解析"><span class="nav-number">2.</span> <span class="nav-text">DOM解析</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#元素节点（element-node）"><span class="nav-number">2.1.</span> <span class="nav-text">元素节点（element node）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#文本节点（text-node）"><span class="nav-number">2.2.</span> <span class="nav-text">文本节点（text node）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#属性节点（attribute-node）"><span class="nav-number">2.3.</span> <span class="nav-text">属性节点（attribute node）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#其他"><span class="nav-number">2.4.</span> <span class="nav-text">其他</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#DOM创建"><span class="nav-number">3.</span> <span class="nav-text">DOM创建</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#DOM查询"><span class="nav-number">4.</span> <span class="nav-text">DOM查询</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#selector系列"><span class="nav-number">4.1.</span> <span class="nav-text">selector系列</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#getElement系列"><span class="nav-number">4.2.</span> <span class="nav-text">getElement系列</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#相互访问"><span class="nav-number">4.3.</span> <span class="nav-text">相互访问</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#DOM更改"><span class="nav-number">5.</span> <span class="nav-text">DOM更改</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#属性操作"><span class="nav-number">6.</span> <span class="nav-text">属性操作</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">王曉波</span>
+
+  
+</div>
+
+
+  <div class="powered-by">
+    由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+  </div>
+
+  <span class="post-meta-divider">|</span>
+
+  <div class="theme-info">
+    主题 &mdash;
+    <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+      NexT.Muse
+    </a>
+  </div>
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
